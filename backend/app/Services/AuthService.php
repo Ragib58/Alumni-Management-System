@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
+use App\Enums\ActivityAction;
 use App\Enums\RoleType;
 use App\Enums\UserStatus;
 use App\Models\User;
 use App\Repositories\Contracts\AlumniProfileRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
@@ -19,6 +19,7 @@ class AuthService
     public function __construct(
         private readonly UserRepositoryInterface $users,
         private readonly AlumniProfileRepositoryInterface $profiles,
+        private readonly ActivityLogger $activity,
     ) {
     }
 
@@ -52,6 +53,8 @@ class AuthService
 
             $token = $user->createToken('auth_token')->plainTextToken;
 
+            $this->activity->log(ActivityAction::Registration, 'New account registered', $user, $user);
+
             return [
                 'user'  => $user->load(['roles:id,name', 'alumniProfile']),
                 'token' => $token,
@@ -83,6 +86,8 @@ class AuthService
         }
 
         $token = $user->createToken($deviceName ?: 'auth_token')->plainTextToken;
+
+        $this->activity->log(ActivityAction::Login, 'User logged in', $user, $user);
 
         return [
             'user'  => $user->load(['roles:id,name', 'alumniProfile']),
