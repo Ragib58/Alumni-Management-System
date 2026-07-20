@@ -10,9 +10,22 @@ import {
   LogOut,
   Menu,
   X,
+  CalendarDays,
+  CalendarCog,
+  Ticket,
+  ClipboardList,
+  Wallet,
+  TrendingUp,
+  ScanLine,
+  BarChart3,
+  Handshake,
+  Settings,
+  History,
+  Bell,
 } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import { useToast } from '@/components/ui/toast'
+import { NotificationBell } from '@/components/common/NotificationBell'
 import { cn, getInitials } from '@/lib/utils'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
@@ -37,9 +50,23 @@ interface NavItem {
 
 const NAV: NavItem[] = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard, roles: ['super_admin', 'event_manager'] },
+  { to: '/admin/analytics', label: 'Analytics', icon: BarChart3, roles: ['super_admin', 'event_manager'] },
   { to: '/users', label: 'User Management', icon: Users, roles: ['super_admin', 'event_manager'] },
   { to: '/alumni', label: 'Alumni Management', icon: Contact, roles: ['super_admin', 'event_manager'] },
+  { to: '/admin/events', label: 'Event Management', icon: CalendarCog, roles: ['super_admin', 'event_manager'] },
+  { to: '/admin/registrations', label: 'Registrations', icon: ClipboardList, roles: ['super_admin', 'event_manager'] },
+  { to: '/admin/attendance/scan', label: 'QR Check-In', icon: ScanLine, roles: ['super_admin', 'event_manager'] },
+  { to: '/admin/payments', label: 'Payments', icon: Wallet, roles: ['super_admin', 'event_manager'] },
+  { to: '/admin/revenue', label: 'Revenue', icon: TrendingUp, roles: ['super_admin', 'event_manager'] },
+  { to: '/admin/reports', label: 'Reports', icon: ClipboardList, roles: ['super_admin', 'event_manager'] },
+  { to: '/admin/sponsors', label: 'Sponsors', icon: Handshake, roles: ['super_admin', 'event_manager'] },
+  { to: '/admin/activity', label: 'Activity Log', icon: History, roles: ['super_admin', 'event_manager'] },
+  { to: '/admin/settings', label: 'Settings', icon: Settings, roles: ['super_admin'] },
   { to: '/directory', label: 'Alumni Directory', icon: BookUser },
+  { to: '/events', label: 'Events', icon: CalendarDays },
+  { to: '/my-registrations', label: 'My Registrations', icon: Ticket },
+  { to: '/my-tickets', label: 'My Tickets', icon: Ticket },
+  { to: '/notifications', label: 'Notifications', icon: Bell, roles: undefined },
   { to: '/profile', label: 'My Profile', icon: UserCircle },
 ]
 
@@ -114,6 +141,9 @@ export function DashboardLayout() {
           </button>
           <div className="hidden lg:block" />
 
+          <div className="flex items-center gap-1">
+            <NotificationBell />
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-3 rounded-full outline-none">
@@ -147,6 +177,7 @@ export function DashboardLayout() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          </div>
         </header>
 
         <main className="p-4 sm:p-6 lg:p-8">

@@ -1,0 +1,9 @@
+# =============================================================================
+# AMS scheduler — install with:  crontab -u www-data deploy/crontab.txt
+# The single entry drives ALL Laravel scheduled tasks (see routes/console.php).
+# =============================================================================
+
+* * * * * cd /var/www/ams/backend && php artisan schedule:run >> /dev/null 2>&1
+
+# Nightly database backup (see deploy/backup.sh)
+0 2 * * * /var/www/ams/deploy/backup.sh >> /var/log/ams/backup.log 2>&1
